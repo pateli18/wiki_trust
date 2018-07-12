@@ -7,7 +7,7 @@ def create_db():
 
 	print("Creating database...")
 	query = """
-	CREATE DATABASE IF NOT EXISTS wiki_trust DEFAULT CHARACTER SET 'utf8'
+	CREATE DATABASE IF NOT EXISTS wiki_trust DEFAULT CHARACTER SET 'utf8mb4'
 	"""
 
 	execute_db_queries([query], False)

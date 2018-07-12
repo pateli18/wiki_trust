@@ -1,4 +1,4 @@
-import requests
+import requests, argparse
 from bs4 import BeautifulSoup
 from db_helpers import push_records_to_db, get_pages_to_scrape
 from multiprocessing import Pool
@@ -16,7 +16,8 @@ def process_citation_item(citation):
 	citation_text: str, text of citation
 	links: str array, array of links in citation
 	"""
-	links = [link["href"] for link in citation.find_all("a")]
+
+	links = [link["href"] for link in citation.find_all("a") if link.has_attr("href")]
 	citation_text = citation.text
 
 	return citation_text, links
@@ -39,7 +40,12 @@ def process_citations_html(page):
 	soup = BeautifulSoup(page.text, "html.parser")
 	citation_section = soup.find("ol", class_="references")
 	citation_section = soup.find("div", class_="references-column-count") if citation_section is None else citation_section
-	citations = citation_section.find_all("li")
+	citation_section = soup.find("div", class_="references-column-width") if citation_section is None else citation_section
+	
+	if citation_section is None:
+		citations = soup.find_all("cite")
+	else:
+		citations = citation_section.find_all("li")
 	
 	# loop through each citation item, extract relevant info, add to data list
 	citation_data = []
@@ -82,11 +88,19 @@ def scrape_all_pages(processes = 1):
 	"""
 
 	pages_to_scrape = get_pages_to_scrape()
+	print(f"Scraping {len(pages_to_scrape)} pages...")
 	pool = Pool(processes)
 	pool.map(scrape_page, pages_to_scrape)
 
 if __name__ == "__main__":
-	scrape_all_pages(4)
+	parser = argparse.ArgumentParser()
+	parser.add_argument('-p', '--processes', nargs = '?', type = int, default = 1)
+
+	args = parser.parse_args()
+	params = {}
+	params["processes"] = args.processes
+
+	scrape_all_pages(**params)
 
 
 

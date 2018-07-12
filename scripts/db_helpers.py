@@ -64,8 +64,14 @@ def push_records_to_db(table_name, data_dicts):
 
 		placeholder = ", ".join(["%s"] * len(data_dict))
 		query = "insert into `{table}` ({columns}) values ({values});".format(table=table_name, columns=",".join(data_dict.keys()), values=placeholder)
-		cursor.execute(query, list(data_dict.values()))
-
+		try:
+			cursor.execute(query, list(data_dict.values()))
+		except mysql.connector.errors.DatabaseError as err:
+			if err.errno == 1366:
+				data_dict["citation_text"] = ""
+				query = "insert into `{table}` ({columns}) values ({values});".format(table=table_name, columns=",".join(data_dict.keys()), values=placeholder)
+				cursor.execute(query, list(data_dict.values()))
+				
 	cursor.close()
 	connection.commit()
 	connection.close()
