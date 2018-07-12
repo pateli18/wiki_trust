@@ -46,59 +46,28 @@ def execute_db_queries(queries, db_created = True):
 	cursor.close()
 	connection.close()
 
-def create_db():
+def get_pages_to_scrape():
 	"""
-	Creates database if it does not already exist
+	Function that gets page ids that have not been scraped
+
+	Returns
+	-------
+	page_ids: str array, array of page ids that have not been scraped
 	"""
 
-	print("Creating database...")
 	query = """
-	CREATE DATABASE IF NOT EXISTS wiki_trust DEFAULT CHARACTER SET 'utf8'
+	SELECT * FROM pages WHERE id NOT IN (SELECT page_id FROM citations)
 	"""
 
-	execute_db_queries([query], False)
+	connection = get_db_connection()
+	cursor = connection.cursor()
+	cursor.execute(query)
 
-def create_pages_table():
-	"""
-	Creates the pages table
-	"""
+	page_ids = []
+	for page in cursor:
+		page_ids.append(page)
 
-	print("Creating pages table...")
-	query = """
-	CREATE TABLE IF NOT EXISTS pages (
-		id VARCHAR(400) NOT NULL,
-		name TEXT NOT NULL,
-		language TEXT NOT NULL,
-		PRIMARY KEY (id)
-	)
-	"""
+	cursor.close()
+	connection.close()
 
-	execute_db_queries([query])
-
-def create_citations_table():
-	"""
-	Creates the citations table
-	"""
-
-	print("Creating citations table...")
-	query = """
-	CREATE TABLE IF NOT EXISTS citations (
-		id BIGINT NOT NULL AUTO_INCREMENT,
-		page_id VARCHAR(400) NOT NULL,
-		citation_num SMALLINT NOT NULL,
-		link TEXT NOT NULL,
-		PRIMARY KEY (id),
-		FOREIGN KEY (page_id)
-			REFERENCES pages(id)
-        	ON DELETE CASCADE
-	)
-	"""
-
-	execute_db_queries([query])
-
-if __name__ == "__main__":
-	create_db()
-	create_pages_table()
-	create_citations_table()
-
-
+	return page_ids
