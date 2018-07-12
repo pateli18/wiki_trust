@@ -70,6 +70,33 @@ def push_records_to_db(table_name, data_dicts):
 	connection.commit()
 	connection.close()
 
+def get_all_page_ids():
+	"""
+	Function that gets all page ids
+
+	Returns
+	-------
+	page_ids: str set, set of page ids
+	"""
+
+	query = """
+	SELECT id FROM pages
+	"""
+
+	connection = get_db_connection()
+	cursor = connection.cursor()
+	cursor.execute(query)
+
+	page_ids = []
+	for page in cursor:
+		page_ids.append(page[0])
+
+	cursor.close()
+	connection.close()
+
+	return set(page_ids)
+
+
 def get_pages_to_scrape():
 	"""
 	Function that gets page ids that have not been scraped
@@ -89,7 +116,7 @@ def get_pages_to_scrape():
 
 	page_ids = []
 	for page in cursor:
-		page_ids.append(page)
+		page_ids.append(page[0])
 
 	cursor.close()
 	connection.close()
