@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 from db_helpers import push_records_to_db, get_pages_to_scrape
+from multiprocessing import Pool
 
 def process_citation_item(citation):
 	"""
@@ -37,6 +38,7 @@ def process_citations_html(page):
 	# extract citation items from html of page
 	soup = BeautifulSoup(page.text, "html.parser")
 	citation_section = soup.find("ol", class_="references")
+	citation_section = soup.find("div", class_="references-column-count") if citation_section is None else citation_section
 	citations = citation_section.find_all("li")
 	
 	# loop through each citation item, extract relevant info, add to data list
@@ -58,6 +60,7 @@ def scrape_page(page_id):
 	"""
 
 	# get and process wiki page html
+	print(page_id)
 	url = f"https://en.wikipedia.org/wiki/{page_id}"
 	page_html = requests.get(url)
 	citation_data = process_citations_html(page_html)
@@ -73,23 +76,17 @@ def scrape_page(page_id):
 
 	push_records_to_db("citations", citation_db_data)
 
-def scrape_all_pages():
+def scrape_all_pages(processes = 1):
 	"""
 	Scrapes all outstanding pages
 	"""
 
 	pages_to_scrape = get_pages_to_scrape()
-
-	for counter, page in enumerate(pages_to_scrape):
-		scrape_page(page)
-
-		# progress print out
-		if counter % 50 == 0:
-			print(f"{counter} out of {len(pages_to_scrape)} complete...")
-
+	pool = Pool(processes)
+	pool.map(scrape_page, pages_to_scrape)
 
 if __name__ == "__main__":
-	scrape_all_pages()
+	scrape_all_pages(4)
 
 
 
