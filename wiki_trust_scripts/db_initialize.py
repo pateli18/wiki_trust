@@ -42,6 +42,7 @@ def create_citations_table():
 		citation_num SMALLINT NOT NULL,
 		citation_text TEXT,
 		link TEXT NOT NULL,
+		processed_link TEXT,
 		PRIMARY KEY (id),
 		FOREIGN KEY (page_id)
 			REFERENCES pages(id)

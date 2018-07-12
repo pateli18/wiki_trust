@@ -1,7 +1,82 @@
-import requests, argparse
+import requests, argparse, re
 from bs4 import BeautifulSoup
 from db_helpers import push_records_to_db, get_pages_to_scrape
 from multiprocessing import Pool
+
+def extract_archive_site(link_raw):
+	"""
+	Extracts base url from those sites that have been archived
+
+	Parameters
+	----------
+	link_raw: str, link directly from wikipedia citation
+
+	Returns
+	-------
+	link: str, non-archive-site link
+	"""
+	if "//web.archive.org" in link_raw or "//archive.is" in link_raw or "//www.webcitation.org" in link_raw:
+		link_index = link_raw.find("http", 5)
+	else:
+		link_index = 0
+
+	link = link_raw[link_index:]
+	return link
+
+def standardize_wiki_url(processed_link):
+	"""
+	Standardizes the url for wikipedia for a post-processed link
+
+	Parameters
+	----------
+	processed_link: str, wiki link that has been processed by the extract_base_url function
+
+	Returns
+	-------
+	standardized_link: str, link that has been standardized
+	"""
+	if processed_link == "wiki" or processed_link == "w":
+		standardized_link = "www.wikipedia.org"
+	else:
+		standardized_link = processed_link
+
+	return standardized_link
+
+def extract_base_url(link_raw):
+	"""
+	Processes links from wikipedia citations to get base urls
+
+	Parameters
+	----------
+	link_raw: str, link directly from wikipedia citation
+
+	Returns
+	-------
+	processed_link: str, base url (basically only the subdomain and domain)
+	"""
+	try:
+		processed_link = re.search('^((http[s]?|ftp):\/)?\/?\/?([^\/\s]+)', link_raw).group(3)
+	except AttributeError:
+		processed_link = ""
+
+	return processed_link
+
+def process_link(link_raw):
+	"""
+	Processes citation link from wikipedia through various steps
+
+	Parameters
+	----------
+	link_raw: str, link directly from wikipedia citation
+
+	Returns
+	-------
+	standardized_link: str
+	"""
+	non_archive_link = extract_archive_site(link_raw)
+	processed_link = extract_base_url(non_archive_link)
+	standardized_link = standardize_wiki_url(processed_link)
+	return standardized_link
 
 def process_citation_item(citation):
 	"""
@@ -66,7 +141,6 @@ def scrape_page(page_id):
 	"""
 
 	# get and process wiki page html
-	print(page_id)
 	url = f"https://en.wikipedia.org/wiki/{page_id}"
 	page_html = requests.get(url)
 	citation_data = process_citations_html(page_html)
@@ -76,8 +150,9 @@ def scrape_page(page_id):
 	for citation_num, citation in enumerate(citation_data):
 		citation_text, links = citation
 		for link in links:
+			processed_link = process_link(link)
 			link_data = {"page_id":page_id, "citation_num":citation_num, 
-			"citation_text":citation_text, "link":link}
+			"citation_text":citation_text, "link":link, "processed_link":processed_link}
 			citation_db_data.append(link_data)
 
 	push_records_to_db("citations", citation_db_data)
@@ -89,6 +164,7 @@ def scrape_all_pages(processes = 1):
 
 	pages_to_scrape = get_pages_to_scrape()
 	print(f"Scraping {len(pages_to_scrape)} pages...")
+
 	pool = Pool(processes)
 	pool.map(scrape_page, pages_to_scrape)
 
