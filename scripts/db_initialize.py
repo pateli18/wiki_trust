@@ -40,6 +40,7 @@ def create_citations_table():
 		id BIGINT NOT NULL AUTO_INCREMENT,
 		page_id VARCHAR(400) NOT NULL,
 		citation_num SMALLINT NOT NULL,
+		citation_text TEXT,
 		link TEXT NOT NULL,
 		PRIMARY KEY (id),
 		FOREIGN KEY (page_id)
