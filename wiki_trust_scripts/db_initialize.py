@@ -42,11 +42,11 @@ def create_citations_table():
 		citation_num SMALLINT NOT NULL,
 		citation_text TEXT,
 		link TEXT NOT NULL,
-		processed_link VARCHAR(400),
+		processed_link VARCHAR(400) NOT NULL,
 		PRIMARY KEY (id),
 		FOREIGN KEY (page_id)
 			REFERENCES pages(id)
-        	ON DELETE CASCADE
+			ON DELETE CASCADE
 	)
 	"""
 
@@ -61,11 +61,14 @@ def create_domains_table():
 	query = """
 	CREATE TABLE IF NOT EXISTS domains (
 		domain VARCHAR(400) NOT NULL,
-		rank INT,
-		linksincount INT,
-		news_site BOOLEAN
+		alexa_rank INT,
+		alexa_linksincount INT,
+		news_site BOOLEAN,
+		PRIMARY KEY (domain)
 	)
 	"""
+
+	execute_db_queries([query])
 
 def create_link_domain_map_table():
 	"""
@@ -78,14 +81,16 @@ def create_link_domain_map_table():
 		processed_link VARCHAR(400) NOT NULL,
 		domain VARCHAR(400) NOT NULL,
 		PRIMARY KEY (processed_link),
-		FOREIGN KEY (processed_link)
-			REFERENCES citations(processed_link)
-			ON DELETE CASCADE,
+		#FOREIGN KEY (processed_link)
+		#	REFERENCES citations(processed_link)
+		#	ON DELETE CASCADE,
 		FOREIGN KEY (domain)
 			REFERENCES domains(domain)
 			ON DELETE CASCADE
 	)
 	"""
+
+	execute_db_queries([query])
 
 if __name__ == "__main__":
 	create_db()

@@ -77,55 +77,63 @@ def push_records_to_db(table_name, data_dicts):
 	connection.commit()
 	connection.close()
 
-def get_all_page_ids():
+def get_unique_set(table_name, column_name):
 	"""
-	Function that gets all page ids
+	Function that gets all unique values in a specific table column
+
+	Parameters
+	----------
+	table_name: str, name of table in db
+	column_name: str, name of column in table
 
 	Returns
 	-------
-	page_ids: str set, set of page ids
+	values: set, set of values in chosen column
 	"""
 
-	query = """
-	SELECT id FROM pages
+	query = f"""
+	SELECT {column_name} FROM {table_name}
 	"""
 
 	connection = get_db_connection()
 	cursor = connection.cursor()
 	cursor.execute(query)
 
-	page_ids = []
-	for page in cursor:
-		page_ids.append(page[0])
+	values_raw = []
+	for item in cursor:
+		values_raw.append(item[0])
 
 	cursor.close()
 	connection.close()
 
-	return set(page_ids)
+	values = set(values_raw)
+
+	return values
 
 
-def get_pages_to_scrape():
+def get_list_from_custom_query(query, column_num):
 	"""
-	Function that gets page ids that have not been scraped
+	Function that returns list of values based on custom SQL query
+
+	Parameters
+	----------
+	query: str, SQL query to execute on DB
+	column_num: num of column to get value from
 
 	Returns
 	-------
-	page_ids: str array, array of page ids that have not been scraped
-	"""
-
-	query = """
-	SELECT id FROM pages WHERE id NOT IN (SELECT page_id FROM citations)
+	values: array, array of values from SQL column
 	"""
 
 	connection = get_db_connection()
 	cursor = connection.cursor()
 	cursor.execute(query)
 
-	page_ids = []
-	for page in cursor:
-		page_ids.append(page[0])
+	values = []
+	for item in cursor:
+		values.append(item[column_num])
 
 	cursor.close()
 	connection.close()
 
-	return page_ids
+	return values

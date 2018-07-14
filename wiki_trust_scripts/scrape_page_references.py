@@ -1,6 +1,6 @@
 import requests, argparse, re
 from bs4 import BeautifulSoup
-from db_helpers import push_records_to_db, get_pages_to_scrape
+from db_helpers import push_records_to_db, get_list_from_custom_query
 from multiprocessing import Pool
 
 def extract_archive_site(link_raw):
@@ -162,7 +162,7 @@ def scrape_all_pages(processes = 1):
 	Scrapes all outstanding pages
 	"""
 
-	pages_to_scrape = get_pages_to_scrape()
+	pages_to_scrape = get_list_from_custom_query("SELECT id FROM pages WHERE id NOT IN (SELECT page_id FROM citations)", 0)
 	print(f"Scraping {len(pages_to_scrape)} pages...")
 
 	pool = Pool(processes)

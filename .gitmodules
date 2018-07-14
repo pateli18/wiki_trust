@@ -1,0 +1,3 @@
+[submodule "awis"]
+	path = wiki_trust_scripts/awis
+	url = https://github.com/ashim888/awis.git

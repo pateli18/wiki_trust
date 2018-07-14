@@ -1,6 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
-from db_helpers import push_records_to_db, get_all_page_ids
+from db_helpers import push_records_to_db, get_unique_set
 
 def scrape_featured_article_list():
 	"""
@@ -8,7 +8,7 @@ def scrape_featured_article_list():
 	"""
 
 	# get the article section soup of the page
-	all_page_ids = get_all_page_ids()
+	all_page_ids = get_unique_set("pages", "id")
 
 	url = "https://en.wikipedia.org/wiki/Wikipedia:Featured_articles"
 	page_html = requests.get(url)
