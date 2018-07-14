@@ -92,11 +92,39 @@ def create_link_domain_map_table():
 
 	execute_db_queries([query])
 
+def create_metrics_table():
+	"""
+	Creates the metrics tabls
+	"""
+
+	# drop metrics if exists
+	print("Dropping metrics table...")
+	drop_query = """
+	DROP TABLE IF EXISTS metrics
+	"""
+
+	# Creates metrics table
+	print("Creating metrics table...")
+	create_query = """
+	CREATE TABLE metrics (
+		SELECT domains.domain, link_count, alexa_rank, alexa_linksincount FROM 
+			(SELECT domain, SUM(num_links) AS link_count FROM 
+				(SELECT processed_link, COUNT(*) AS num_links FROM citations 
+				WHERE processed_link NOT LIKE '%#%' GROUP BY 1) AS top_links 
+			INNER JOIN link_domain_map ON top_links.processed_link = link_domain_map.processed_link 
+			GROUP BY 1) AS top_domains 
+		INNER JOIN domains ON top_domains.domain = domains.domain ORDER BY 2 DESC
+	)
+	"""
+
+	execute_db_queries([drop_query, create_query])
+
 if __name__ == "__main__":
 	create_db()
 	create_pages_table()
 	create_citations_table()
 	create_domains_table()
 	create_link_domain_map_table()
+	create_metrics_table()
 
 
