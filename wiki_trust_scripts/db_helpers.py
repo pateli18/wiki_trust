@@ -77,6 +77,25 @@ def push_records_to_db(table_name, data_dicts):
 	connection.commit()
 	connection.close()
 
+def update_domain_record(domain, alexa_rank, alexa_linksincount):
+	"""
+	Updates domain record in db with alexa data
+
+	Parameters
+	----------
+	domain: str, domain name
+	alexa_rank: int, domain's alexa rank
+	alexa_linksincount: int, number of sites linking into domain
+	"""
+
+	query = f"""
+	UPDATE domains 
+	SET alexa_rank={alexa_rank}, alexa_linksincount={alexa_linksincount} 
+	WHERE domain='{domain}'
+	"""
+
+	execute_db_queries([query])
+
 def get_unique_set(table_name, column_name):
 	"""
 	Function that gets all unique values in a specific table column

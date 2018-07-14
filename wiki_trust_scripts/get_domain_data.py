@@ -68,6 +68,42 @@ def store_alexa_data(s3_object, bucket_name, alexa_data, domain):
 	_ = s3_object.put_object(Body=encoded_data, Bucket=bucket_name, Key=filename)
 	return
 
+def initiate_s3_object(bucket_name, create_bucket_function = False):
+	"""
+	Creates S3 client object and bucket if necessary
+
+	Parameters
+	----------
+	bucket_name: str, name of S3 bucket
+	create_bucket_function: bool, create s3 bucket if necessary
+
+	Returns
+	-------
+	s3_object: boto client, object that interfaces with Amazon S3
+
+	"""
+	s3_object = boto3.client('s3',region_name='us-east-1',
+		aws_access_key_id=os.environ["AWSACCESSKEY"],
+		aws_secret_access_key=os.environ["AWSSECRETKEY"])
+
+	if create_bucket_function:
+		create_bucket_if_not_exist(s3_object, bucket_name)
+
+	return s3_object
+
+def initiate_awis_object():
+	"""
+	Creates awis client object
+
+	Returns
+	-------
+	awis_object: AWIS client, client that queries Alexa Web Information Services
+	"""
+
+	awis_object = myawis.CallAwis(os.environ['AWSACCESSKEY'], os.environ['AWSSECRETKEY'])
+	return awis_object
+
+
 def get_domain_data(num_links, bucket_name = 'wiki-trust-bucket'):
 	"""
 	Gets domain data for chosen number of links
@@ -92,13 +128,8 @@ def get_domain_data(num_links, bucket_name = 'wiki-trust-bucket'):
 	domains = get_unique_set("domains", "domain")	
 
 	# initiate awis object
-	awis_object = myawis.CallAwis(os.environ['AWSACCESSKEY'], os.environ['AWSSECRETKEY'])
-
-	# initiate s3 object
-	s3_object = boto3.client('s3',region_name='us-east-1',
-		aws_access_key_id=os.environ["AWSACCESSKEY"],
-		aws_secret_access_key=os.environ["AWSSECRETKEY"])
-	create_bucket_if_not_exist(s3_object, bucket_name)
+	awis_object = initiate_awis_object()
+	s3_object = initiate_s3_object(bucket_name, True)
 
 	# loop through each link and process it
 	for counter, link in enumerate(links_no_domains):
