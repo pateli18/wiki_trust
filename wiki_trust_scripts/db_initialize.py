@@ -107,13 +107,13 @@ def create_metrics_table():
 	print("Creating metrics table...")
 	create_query = """
 	CREATE TABLE metrics (
-		SELECT domains.domain, link_count, alexa_rank, alexa_linksincount FROM 
+		SELECT domains.*, link_count FROM 
 			(SELECT domain, SUM(num_links) AS link_count FROM 
 				(SELECT processed_link, COUNT(*) AS num_links FROM citations 
 				WHERE processed_link NOT LIKE '%#%' GROUP BY 1) AS top_links 
 			INNER JOIN link_domain_map ON top_links.processed_link = link_domain_map.processed_link 
 			GROUP BY 1) AS top_domains 
-		INNER JOIN domains ON top_domains.domain = domains.domain ORDER BY 2 DESC
+		INNER JOIN domains ON top_domains.domain = domains.domain WHERE news_site = TRUE ORDER BY link_count DESC
 	)
 	"""
 
