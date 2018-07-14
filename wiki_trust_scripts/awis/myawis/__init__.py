@@ -18,7 +18,7 @@ URLINFO_RESPONSE_GROUPS = ",".join(
 
 TRAFFICINFO_RESPONSE_GROUPS = "History"
 CATEGORYBROWSE_RESPONSE_GROUPS = ",".join(["Categories", "RelatedCategories", "LanguageCategories", "LetterBars"])
-SITESLINKINGIN_RESPONSE_GROUP = "SitesLinkingIn"
+SITESLINKINGIN_RESPONSE_GROUPS = "SitesLinkingIn"
 
 def is_string(obj):
     try:
@@ -156,7 +156,7 @@ class CallAwis(object):
 
     def return_output(self, url, headers):
         r = requests.get(url, headers=headers)
-        soup = BeautifulSoup(r.text.encode('utf-8'), 'xml')
+        soup = BeautifulSoup(r.text.encode('utf-8'), 'html.parser')
         return soup
 
 
