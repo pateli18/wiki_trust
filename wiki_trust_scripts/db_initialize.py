@@ -42,7 +42,7 @@ def create_citations_table():
 		citation_num SMALLINT NOT NULL,
 		citation_text TEXT,
 		link TEXT NOT NULL,
-		processed_link TEXT,
+		processed_link VARCHAR(400),
 		PRIMARY KEY (id),
 		FOREIGN KEY (page_id)
 			REFERENCES pages(id)
@@ -52,9 +52,46 @@ def create_citations_table():
 
 	execute_db_queries([query])
 
+def create_domains_table():
+	"""
+	Creates the domains table
+	"""
+
+	print("Creating domains table...")
+	query = """
+	CREATE TABLE IF NOT EXISTS domains (
+		domain VARCHAR(400) NOT NULL,
+		rank INT,
+		linksincount INT,
+		news_site BOOLEAN
+	)
+	"""
+
+def create_link_domain_map_table():
+	"""
+	Creates table that maps links to domains
+	"""
+
+	print("Creating link domain map table...")
+	query = """
+	CREATE TABLE IF NOT EXISTS link_domain_map (
+		processed_link VARCHAR(400) NOT NULL,
+		domain VARCHAR(400) NOT NULL,
+		PRIMARY KEY (processed_link),
+		FOREIGN KEY (processed_link)
+			REFERENCES citations(processed_link)
+			ON DELETE CASCADE,
+		FOREIGN KEY (domain)
+			REFERENCES domains(domain)
+			ON DELETE CASCADE
+	)
+	"""
+
 if __name__ == "__main__":
 	create_db()
 	create_pages_table()
 	create_citations_table()
+	create_domains_table()
+	create_link_domain_map_table()
 
 

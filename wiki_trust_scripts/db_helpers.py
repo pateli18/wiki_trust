@@ -16,7 +16,8 @@ def get_db_connection(db_created = True):
 	connection_params = {
 		'user': os.environ["DBUSER"],
 		'password': os.environ["DBPASSWORD"],
-		'host': os.environ["DBHOST"]
+		'host': os.environ["DBHOST"],
+		'auth_plugin': 'caching_sha2_password'
 	}
 
 	if db_created:
