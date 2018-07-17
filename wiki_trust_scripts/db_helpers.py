@@ -1,4 +1,5 @@
-import mysql.connector, os
+import mysql.connector, os, argparse
+import pandas as pd
 
 def get_db_connection(db_created = True):
 	"""
@@ -156,3 +157,26 @@ def get_list_from_custom_query(query, column_num):
 	connection.close()
 
 	return values
+
+def download_tables(folder_path):
+	"""
+	Downloads all tables from the db
+
+	Parameters
+	----------
+	folder_path: str, folder to save all tables
+	"""
+	connection = get_db_connection()
+	tables = ["pages", "citations", "domains", "link_domain_map", "metrics"]
+	for table in tables:
+		print(f"Downloading {table}...")
+		df = pd.read_sql(f"SELECT * FROM {table}", connection)
+		df.to_csv(f"{folder_path}{table}.csv", index = False)
+
+if __name__ == "__main__":
+	parser = argparse.ArgumentParser()
+	parser.add_argument('-f', '--folder_path', nargs = 1, type = str)
+	args = parser.parse_args()
+	params = {"folder_path":args.folder_path[0]}
+
+	download_tables(**params)

@@ -113,7 +113,7 @@ def create_metrics_table():
 				WHERE processed_link NOT LIKE '%#%' GROUP BY 1) AS top_links 
 			INNER JOIN link_domain_map ON top_links.processed_link = link_domain_map.processed_link 
 			GROUP BY 1) AS top_domains 
-		INNER JOIN domains ON top_domains.domain = domains.domain WHERE news_site = TRUE ORDER BY link_count DESC
+		INNER JOIN domains ON top_domains.domain = domains.domain ORDER BY link_count DESC
 	)
 	"""
 
