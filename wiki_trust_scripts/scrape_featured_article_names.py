@@ -7,9 +7,10 @@ def scrape_featured_article_list():
 	Scrapes all page names from wikipedias featured pages list
 	"""
 
-	# get the article section soup of the page
+	# get page ids that have already been scraped
 	all_page_ids = get_unique_set("pages", "id")
 
+	# get the article section soup of the page
 	url = "https://en.wikipedia.org/wiki/Wikipedia:Featured_articles"
 	page_html = requests.get(url)
 	soup = BeautifulSoup(page_html.text, "html.parser")
