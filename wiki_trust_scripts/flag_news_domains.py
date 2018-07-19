@@ -10,19 +10,25 @@ def flag_news_domains(input_data_file):
 	input_data_file: str, filepath to .txt file with domain on each line
 	"""
 	news_domains = open(input_data_file)
-	domain_queries = []
+
+	# reset all flags to false
+	reset_query = """
+	UPDATE domains
+	SET news_site = FALSE
+	"""
+	domain_queries = [reset_query]
 
 	# loop through each line and create a db query
 	for domain in news_domains:
 		domain_name = domain.strip()
 
-		query = f"""
+		flag_query = f"""
 		UPDATE domains
 		SET news_site = TRUE
 		WHERE domain = '{domain_name}'
 		"""
 
-		domain_queries.append(query)
+		domain_queries.append(flag_query)
 
 	execute_db_queries(domain_queries)
 
