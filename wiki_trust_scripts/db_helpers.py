@@ -130,6 +130,37 @@ def get_unique_set(table_name, column_name):
 
 	return values
 
+def get_latest_page_id():
+	"""
+	Retreives the id of the most recent page retrieved
+
+	Returns
+	-------
+	value: str, id of page
+	"""
+
+	query = """
+	SELECT id FROM pages 
+	WHERE note IS NULL AND id NOT LIKE '%\%%' 
+	ORDER BY name DESC 
+	LIMIT 1
+	"""
+
+	connection = get_db_connection()
+	cursor = connection.cursor()
+	cursor.execute(query)
+
+	values = []
+	for item in cursor:
+		values.append(item[0])
+
+	cursor.close()
+	connection.close()
+
+	value = values[0]
+
+	return value
+
 
 def get_list_from_custom_query(query, column_num):
 	"""

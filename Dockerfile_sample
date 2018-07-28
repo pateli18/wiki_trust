@@ -2,7 +2,7 @@
 FROM python:3.7-slim
 
 # Copy the current directory contents into the container at /wiki_trust
-Copy wiki_trust_scripts/ ./wiki_trust/scripts
+COPY wiki_trust_scripts/ ./wiki_trust/wiki_trust_scripts
 Copy requirements.txt ./wiki_trust/
 
 # Set the working directory to /wiki_trust

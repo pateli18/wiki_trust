@@ -1,6 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
-from db_helpers import push_records_to_db, get_unique_set
+from db_helpers import push_records_to_db, get_unique_set, get_latest_page_id
 
 def scrape_page(all_page_ids, soup):
 	"""
@@ -35,7 +35,9 @@ def scrape_all_article_names():
 	all_page_ids = get_unique_set("pages", "id")
 
 	additional_pages = True
-	url = "https://en.wikipedia.org/wiki/Special:AllPages/A"
+	latest_page_id = get_latest_page_id()
+	url = f"https://en.wikipedia.org/w/index.php?title=Special:AllPages&from={latest_page_id}"
+	print(url)
 
 	# keep scraping while there is a 'next' page
 	while additional_pages:
