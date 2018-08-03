@@ -1,0 +1,68 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Wikipedia Trust Index</title>
+        <link rel="stylesheet" href="css/libraries/bootstrap.min.css">
+        <link rel="stylesheet" href="css/font-awesome.min.css">
+        <link rel="stylesheet" href="css/libraries/jquery-ui.min.css">
+        <link rel="stylesheet" href="css/style.css">
+        <link href="https://fonts.googleapis.com/css?family=Roboto+Mono:400,700|Roboto:100,300,300i,500,700,900|Roboto+Condensed:300,400,700" rel="stylesheet">
+    </head>
+    <body onresize="resizeChart()">
+        <div class="container">
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="intro-title">The Wikipedia Trust Index</div>
+                    <div class="chart-controls">
+                        <div class="nav-buttons">
+                            <button id="alpha-bar-button" value="alphaBar">Trust Alpha</button>
+                            <button id="alpha-scatter-button" value="alphaScatter">Citations vs. Popularity</button>
+                            <button id="connection-graph-button" value="connectionGraph">Connections</button>
+                            <button id="citation-bar-button" value="citationBar">Citations</button>
+                        </div>
+                        <div class="search-container">
+                            <input class="form-control" id="search-site" placeholder="Search for a specific site..."/>
+                            <i id="search-clear" class="fa fa-times-circle" onclick="clearSearch()" data-toggle="tooltip" title="Clear Search" data-placement="top"></i>
+                        </div>
+                    </div>
+                    <div class="description-text" id="chart-description">
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="chart-controls">
+                        <div class="chart-title"></div>
+                        <div id="legend-container"></div>
+                    </div>
+                    <div id="chart-container"></div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Load JS libraries -->
+        <script src="js/libraries/jquery.min.js"></script>
+        <script src="js/libraries/jquery-ui.min.js"></script>
+        <script src="js/libraries/bootstrap.min.js"></script>
+        <script src="js/libraries/queue.min.js"></script>
+        <script src="js/libraries/d3.min.js"></script>
+        <script src="js/libraries/d3-tip.js"></script>
+        <script src="js/libraries/d3-legend.min.js"></script>
+
+
+        <!-- Handlers and visualizations -->
+        <script src="js/handlers/main/main.js"></script>
+        <script src="js/handlers/main/chart.js"></script>
+        <script src="js/handlers/main/chart-controls.js"></script>
+        <script src="js/handlers/main/chart-helper.js"></script>
+
+        <script src="js/handlers/main/visualizations/vis-connected-graph.js"></script>
+        <script src="js/handlers/main/visualizations/vis-bar.js"></script>
+        <script src="js/handlers/main/visualizations/vis-area.js"></script>
+        <script src="js/handlers/main/visualizations/vis-scatter.js"></script>
+
+    </body>
+</html>

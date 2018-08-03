@@ -1,0 +1,17 @@
+{
+	"alphaBar":["The trust alpha represents the number of times the source was cited in wikipedia normalized by the popularity of the site on the internet as a whole. The chart displays the trust alpha of each site in descending order. The slider at the top of the chart shows the overall distribution of trust alpha, and moving the brush filters the more detailed bar chart."],
+	"alphaScatter":["The trust alpha represents the number of times the source was cited in wikipedia normalized by the popularity of the site on the internet as a whole. The chart displays the number of citations relative to the number of sites linking into the site as per <a href='https://www.alexa.com/siteinfo'>Alexa</a>. Note that both axes have logarithmic scales."],
+	"connectedGraph":["The graph on the right illustrates the connections between sources in terms of the number of times they are cited in the same page. Points that are closer together are cited more often together, while the size of each circle corresponds to the source's number of citations as a whole."],
+	"citationBar":["This chart displays the total number of times a website was cited in Wikipedia's featured pages. The slider at the top of the chart shows the overall distribution of the sites, and moving the brush filters the more detailed bar chart below."],
+	"projectOverview":["The Wikipedia Trust Index aims to evaluate the relative <i>trustworthiness</i> of news sources based on the citations of the source in the english-language version of <a href='https://en.wikipedia.org/wiki/Main_Page'>Wikipedia</a>.", "TOTAL CHART DESCRIPTION HERE", "JUST TEST FOR ANOTHER PARAGRAH", "YET ANOTHER PARAGRAPH TO TEST"],
+	"authors":[{
+			"name": "Ihsaan Patel",
+			"picture": "data/ihsaan_photo.png",
+			"links": [{"name":"Github", "link":"https://github.com/pateli18"}, {"name":"Linkedin", "link":"https://www.linkedin.com/in/ihsaanpatel/"}]
+		},
+		{
+			"name": "Daniel Alphonsus",
+			"picture": "data/ihsaan_photo.png",
+			"links": [{"name":"Github", "link":"https://github.com/pateli18"}, {"name":"Linkedin", "link":"https://www.linkedin.com/in/ihsaanpatel/"}]
+		}]
+}

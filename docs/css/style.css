@@ -1,0 +1,220 @@
+
+/* YOUR CSS STYLES */
+
+body {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+    color: #333333;
+    background-color: #ffffff;
+    padding-top: 25px;
+}
+
+.link {
+    stroke: #999;
+    stroke-opacity: 0.2;
+    stroke-width: 0.5;
+}
+
+.node {
+    stroke-width: 1px;
+    stroke: black;
+}
+
+.scatter-point {
+    opacity: 0.8;
+    stroke: black;
+    stroke-width: 1px;
+}
+
+.node:hover, .bar:hover, .scatter-point:hover, .selected {
+    stroke-width: 5px;
+    stroke: black;
+    opacity: 1;
+}
+
+.unselected {
+    opacity: 0.5;
+}
+
+.all-line {
+    stroke-width: 2px;
+    stroke: none;
+}
+
+.chart-title {
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.slider-label {
+    text-align: center;
+    font-size: 10px;
+    font-weight: bold;
+}
+
+.intro-title {
+    font-weight: bold;
+    font-size: 30px;
+}
+
+.controls-title {
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.chart-controls {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.note {
+    font-style: italic;
+    font-size: 10px;
+}
+
+.axis-label {
+    font-weight: bold;
+    font-size: 12px;
+    text-transform: uppercase;
+}
+
+.tipLabel {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.tipValue {
+    font-size: 14px;
+}
+
+.tipRow {
+    padding: 2px 0px;
+}
+
+.nav-buttons button, #about-button {
+    background-color: transparent;
+    color: black;
+    font-size: 10px;
+    border: 1px black solid;
+    padding: 2px;
+    border-radius: 2px;
+    margin: 0px 5px;
+    display: inline-block;
+}
+
+.nav-buttons button:hover, #about-button:hover {
+    background-color: black;
+    color: white;
+}
+
+.nav-buttons button.clicked {
+    background-color: black;
+    color: white;
+}
+
+#legend-container {
+    text-align: center;
+}
+
+.legend-label {
+    font-size: 10px;
+    font-style: italic;
+}
+
+.author-profile {
+    text-align: center;
+    display: inline-block;
+    margin: 20px;
+}
+
+.author-picture {
+    height: 100px;
+    border-radius: 100px;
+    margin-bottom: 10px;
+}
+
+.search-container {
+    margin: 10px 0 30px 0;
+    text-align: center;
+}
+
+#search-site {
+    width: 200px;
+    margin: 0 auto;
+    font-weight: bold;
+    text-align: center;
+    display: inline-block;
+}
+
+#search-clear {
+    color: rgb(215, 48, 39);
+    font-size: 20px;
+    display: none;
+}
+
+.search-result {
+    padding: 10px;
+    border-top: #999 1px solid;
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+.search-result:hover, .search-result:focus, .search-result:active {
+    background-color: darkgrey;
+    border: none;
+}
+
+.search-name {
+    font-weight: bold;
+}
+
+.ui-state-active {
+    background-color: transparent;
+    color: black;
+}
+
+.about-button-container {
+    text-align: center;
+    padding: 20px 0;
+}
+
+html, body, .container, .row, .col-md-8, #chart-container {
+    height: 100%;
+}
+
+.description-text {
+    font-size: 20px;
+}
+
+#primary-chart {
+    height: 80%;
+}
+
+.d3-tip {
+    line-height: 1;
+    padding: 12px;
+    background: black;
+    color: #fff;
+    border-radius: 2px;
+}
+
+/* Creates a small triangle extender for the tooltip */
+.d3-tip:after {
+    box-sizing: border-box;
+    display: inline;
+    font-size: 10px;
+    width: 100%;
+    line-height: 1;
+    color: black;
+    content: "\25BC";
+    position: absolute;
+    text-align: center;
+}
+
+/* Style northward tooltips differently */
+.d3-tip.n:after {
+    margin: -1px 0 0 0;
+    top: 100%;
+    left: 0;
+}
