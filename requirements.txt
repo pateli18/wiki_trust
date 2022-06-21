@@ -7,7 +7,7 @@ docutils==0.14
 idna==2.7
 jmespath==0.9.3
 mysql-connector-python==8.0.11
-numpy==1.14.5
+numpy==1.22.0
 pandas==0.23.3
 protobuf==3.6.0
 python-dateutil==2.7.3
